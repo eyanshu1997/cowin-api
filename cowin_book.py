@@ -101,13 +101,14 @@ def find_center(pi):
 						i=180
 						while i>0:
 							n = os.fork()
-							if n==0:
-								send_mail(l)
-								exit()
-							else:
+							if n>0:
 								os.system('play -nq -t alsa synth {} sine {}'.format(duration, freq))
 								i=i-1
 								time.sleep(1)
+							else:
+								send_mail(l)
+								exit()
+								
 	except NoSuchElementException:
 		print("no slots")
 	
