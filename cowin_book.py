@@ -1,5 +1,6 @@
 import sys
 import time
+from selenium.webdriver.support.ui import Select
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
@@ -10,9 +11,9 @@ from firebase import Firebase
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
-sender_email = 
-password = 
-receiver_email=
+sender_email = None #change
+password = None 
+receiver_email=None
 duration = 1  # seconds
 freq = 440  # Hz
 
@@ -38,6 +39,7 @@ def send_mail(mess):
         server.sendmail(sender_email, receiver_email, message.as_string())
 db=None
 def firebase():
+	global db
 	config={
 	    "apiKey": "AIzaSyCSt9KRzomwUvi_vmuR3_M3VSQPuiwZbE8",
 	    "authDomain": "cowin-e58d4.firebaseapp.com",
@@ -60,13 +62,18 @@ def reset():
 	driver.close()
 	driver = webdriver.Chrome('./chromedriver')
 	main()
-	
+def find_center_by_distict():
+	districtbut=driver.find_element_by_class_name("status-switch")
+	districtbut.click()
+	sele=driver.find_element_by_class_name("mat-select-empty")
+	sele.click() 
+	time.sleep(100)
 def find_center(pi):
 	#time.sleep(100)
 	pin=driver.find_element_by_id("mat-input-2")
 	pin.clear()
 	pin.send_keys(pi)
-	time.sleep(1)
+	time.sleep(11)
 	but=driver.find_element_by_class_name("pin-search-btn")
 	but.click()
 	time.sleep(2)
@@ -106,7 +113,7 @@ def find_center(pi):
 								i=i-1
 								time.sleep(1)
 							else:
-								send_mail(l)
+								#send_mail(l)
 								exit()
 								
 	except NoSuchElementException:
@@ -251,6 +258,7 @@ def main():
 		if time.time()-current>13*60:
 			logout()
 			login()
+		#find_center_by_distict()
 		find_center(sys.argv[3])
 firebase()
 main()
