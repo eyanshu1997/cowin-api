@@ -73,7 +73,7 @@ def find_center(pi):
 	pin=driver.find_element_by_id("mat-input-2")
 	pin.clear()
 	pin.send_keys(pi)
-	time.sleep(11)
+	time.sleep(1)
 	but=driver.find_element_by_class_name("pin-search-btn")
 	but.click()
 	time.sleep(2)
@@ -106,15 +106,15 @@ def find_center(pi):
 					if int(l.strip())>4: 
 						print("found "+ l)
 						i=180
-						while i>0:
-							n = os.fork()
-							if n>0:
+						n = os.fork()
+						if n>0:
+							while i>0:
 								os.system('play -nq -t alsa synth {} sine {}'.format(duration, freq))
 								i=i-1
 								time.sleep(1)
-							else:
-								#send_mail(l)
-								exit()
+						else:
+							send_mail(l)
+							exit()
 								
 	except NoSuchElementException:
 		print("no slots")
